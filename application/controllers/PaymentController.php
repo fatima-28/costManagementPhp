@@ -5,9 +5,10 @@ class PaymentController extends CI_Controller {
     public function getAll()
 	{
         $this->load->model('PaymentModel');
-        // $data['types'] = $this->show_payments();
-        // $data['currencies'] =  $this->currencies();
+        
         $data['payment']=$this->PaymentModel->getAll();
+        $data['types'] = $this->show_payments();
+        $data['currencies'] =  $this->currencies();
         $this->load->view('frontend/getall_payments',$data);
     }
   
@@ -19,6 +20,7 @@ class PaymentController extends CI_Controller {
         $this->load->view('frontend/add_payment', $data);
 		
     }
+   
     public function show_payments() {   
         $this->load->model('PaymentTypeModel');
         $this->load->model('PaymentModel');
@@ -48,13 +50,16 @@ class PaymentController extends CI_Controller {
        
         if ($this->form_validation->run()) {
             $data= [
-                'amount'=> $this->input->post('amount'),             
+                'amount'=> $this->input->post('amount'),            
+                
                 'payment_type_id'=> $this->input->post('payment_type_id'), 
                 'currency_id'=> $this->input->post('currency_id'), 
                 'comment'=> $this->input->post('comment'), 
                 'is_income'=> $this->input->post('is_income'), 
+                'created_date'=> date('Y-m-d H:i:s'), 
                 
                ];
+              
                
            
              $this->load->model('PaymentModel','payment');
@@ -77,5 +82,32 @@ class PaymentController extends CI_Controller {
        
 
     }
+
+    public function filterData(){
+       
+        if (!$this->input->is_ajax_request()) {      
+            show_404();
+        }
+        $start_date = $this->input->post('start_date');
+        echo $start_date+1;
+     
+        $end_date = $this->input->post('end_date');
+        $currency_id = $this->input->post('currency_id');
+     
+       
+        $payment_type_id = $this->input->post('payment_type_id');
+        $this->load->model('PaymentModel');
+        
+        $filteredData = $this->PaymentModel->filterAndSortData($start_date,$end_date,$currency_id, $payment_type_id);
+
+        $response = array(
+            'success' => true,
+            'message' => 'Type added successfully.',
+            'redirect' => base_url('getpayments')
+        );
+        header('Content-Type: application/json');
+        echo json_encode($filteredData);
+    }
+    
 }
 

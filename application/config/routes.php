@@ -7,7 +7,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['all'] = 'welcome/index';
 
-//Payment Type 
+//Payment Type
 
  $route['addtype'] = 'PaymentTypeController/add';
  $route['ptstore'] = 'PaymentTypeController/store';
@@ -25,6 +25,8 @@ $route['all'] = 'welcome/index';
  $route['addpayment'] = 'PaymentController/add';
  $route['pstore'] = 'PaymentController/store';
  $route['getpayments'] = 'PaymentController/getAll';
+ $route['filterdata'] = 'PaymentController/filterData';
+ 
  
 
 

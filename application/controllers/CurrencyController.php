@@ -34,14 +34,14 @@ class CurrencyController extends CI_Controller {
                 'message' => 'Currency added successfully.',
                 'redirect' => base_url('getcurrency') 
             );
-            // redirect(base_url('getcurrency'));
+           
         }
         else{
             $response = array(
                 'success' => false,
                 'message' => validation_errors()
             );
-          // $this->add();
+          
         }
         header('Content-Type: application/json');
         echo json_encode($response);

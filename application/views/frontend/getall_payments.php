@@ -10,20 +10,60 @@
         .money{
             color:green;
         }
+        .hide{
+          display:none;
+        }
+        .show{
+          display: table-row;
+        }
+        body{
+          padding-left:40px;
+        }
     </style>
 </head>
 <body>
+<h1>Payments</h1>
+<div class="row">
+
+
+
+<form action="<?php echo base_url('filterdata')?>"  id="myForm" method="POST">
+<div class="row">
 <div class="col-3 m-3">
-    <select class="form-control" id="exampleFormControlSelect1 " >
-        <option>sort by date</option>
-        <option> sort by category</option>
-        <option> sort by currency</option>
-       
-      </select>
+
+<label for="start_date">Start Date:</label>
+    <input type="date" name="start_date" id="start_date" required value="2023-07-03"> <br>
+    
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date" required value="2023-07-30">
+    
+</div>
+<div class="col-3 m-3">
+ <label for="">Filter by Category</label> <br>
+ <select name="payment_type_id" class="typeSelect">
+   
+   <?php foreach ($types as $type): ?>
+   
+       <option value="<?php echo $type->Id; ?>"><?php echo $type->name; ?></option>
+   <?php endforeach; ?>
+</select>
  </div>
- <div class="col-6 m-3">
- <h1>Payments</h1>
+
+ <div class="col-3 m-3">
+ <label for="">Filter by Currency</label> <br>
+ <select name="currency_id" class="currencySelect">
+    <?php foreach ($currencies as $currency) : ?>
+        <option value="<?php echo $currency->Id; ?>"><?php echo $currency->name; ?></option>
+    <?php endforeach; ?>
+
+</select>
  </div>
+</div>
+<button type="submit"  class="btn btn-success m-3 filter">Filter</button>
+</div>
+
+</form>
+ 
 <div class="col-10 m-3" >
     <table class="table  table-bordered">
         <thead>
@@ -36,6 +76,7 @@
             <th scope="col">income</th>
             <th scope="col">expense</th>   
             <th scope="col">remain</th>
+            <th scope="col">created date</th>
            
           </tr>
         </thead>
@@ -46,7 +87,7 @@
           <tr>
           <td><?php  echo $row->Id;?></td>
            
-            <td>  
+            <td class="type-name">  
             <?php
       
       $payment_type_id = $row->payment_type_id;
@@ -55,7 +96,7 @@
       ?>  
         </td>
 
-            <td>   <?php
+            <td class="currency-name">   <?php
       $currency_id = $row->currency_id;
       $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
       echo $currency_name;
@@ -81,18 +122,50 @@
       $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
       echo $currency_name;
       ?></span></td>
-            
-  
             <?php endif; ?>
             <td><?php  echo $row->amount;?>
-              
-           
-           
+            <td class="datetime"><?php  echo $row->created_date;?>
           </tr>
           <?php endforeach;?>
        
         </tbody>
       </table>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+      <script>
+      
+    $(document).ready(function() {
+      $('#myForm').submit(function(e) {
+        let form=$(this);
+           e.preventDefault();
+           
+           let urlEncodedString=form.serialize();
+           let urlParams = new URLSearchParams(urlEncodedString);
+           let jsonData = {};
+           for (const [key, value] of urlParams) {
+            jsonData[key] = value;
+          }
+           let jsonString = JSON.stringify(jsonData);
+            console.log(jsonString);  
+            $.ajax({
+              url: form.attr('action'),
+                type: 'POST',
+                data: jsonString,
+                dataType: 'json',
+                success: function(response) {
+                  console.log(response);
+                 
+                },
+                error: function(xhr,status,err) {
+                  console.log(xhr);
+                  console.log(status);
+                  console.log(err);
+                }
+            });
+        });
+    });
+</script>
+
 </div>
 </body>
 </html>

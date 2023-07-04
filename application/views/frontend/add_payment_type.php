@@ -30,6 +30,7 @@
             e.preventDefault();
 
             var form = $(this);
+          
 
             $.ajax({
                 url: form.attr('action'),

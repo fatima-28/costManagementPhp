@@ -17,7 +17,7 @@
     <form id="myForm" action="<?php  echo base_url('pstore');?>" method="POST">
         <div class="form-group">
           <label for="TypeOfPayment">Amount</label>
-          <input type="text" class="form-control" name="amount" id="TypeOfPayment" aria-describedby="emailHelp" placeholder="Enter amount">
+          <input type="number" class="form-control" name="amount" id="TypeOfPayment" aria-describedby="emailHelp" placeholder="Enter amount">
       <small> <?php echo form_error('amount'); ?></small>
         </div>
    <div class="form-group">
