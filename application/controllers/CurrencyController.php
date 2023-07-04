@@ -14,6 +14,9 @@ class CurrencyController extends CI_Controller {
     }
     public function store()
 	{
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
         $this->load->library('form_validation');
        
         $this->form_validation->set_rules('name','Name','required');
@@ -26,15 +29,25 @@ class CurrencyController extends CI_Controller {
            
              $this->load->model('CurrencyModel','currency');
              $this->currency->insertdb($data);
-          
-             redirect(base_url('getcurrency'));
+             $response = array(
+                'success' => true,
+                'message' => 'Currency added successfully.',
+                'redirect' => base_url('getcurrency') 
+            );
+            // redirect(base_url('getcurrency'));
         }
         else{
-           $this->add();
+            $response = array(
+                'success' => false,
+                'message' => validation_errors()
+            );
+          // $this->add();
         }
+        header('Content-Type: application/json');
+        echo json_encode($response);
        
 
-		// $this->load->view('cost/get');
+		
     }
 }
 

@@ -14,7 +14,7 @@
 <body>
 <div class="col-4 d-flex " style="border: 1px solid rgb(198, 198, 198); margin: 50px auto; padding: 20px 30px; border-radius: 20px;">
     
-    <form action="<?php  echo base_url('pstore');?>" method="POST">
+    <form id="myForm" action="<?php  echo base_url('pstore');?>" method="POST">
         <div class="form-group">
           <label for="TypeOfPayment">Amount</label>
           <input type="text" class="form-control" name="amount" id="TypeOfPayment" aria-describedby="emailHelp" placeholder="Enter amount">
@@ -52,7 +52,7 @@
    
         <span>Expense</span>
     
-        <small> <?php echo form_error('is_income'); ?></small>
+        
 </div>
    </div>
        
@@ -67,5 +67,36 @@
       </form>
     
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myForm').submit(function(e) {
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        }
+                    } else {
+                        var small = $('small');
+                let message=$(response.message).text()
+                small.text(message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while submitting the form.');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

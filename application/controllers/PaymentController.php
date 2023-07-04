@@ -38,6 +38,9 @@ class PaymentController extends CI_Controller {
     
     public function store()
 	{
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
         $this->load->library('form_validation');
        
         $this->form_validation->set_rules('amount','Amount','required');
@@ -57,13 +60,20 @@ class PaymentController extends CI_Controller {
              $this->load->model('PaymentModel','payment');
              $this->payment->insertdb($data);
           
-             redirect(base_url('getpayments'));
-            
+              $response = array(
+                'success' => true,
+                'message' => 'Type added successfully.',
+                'redirect' => base_url('getpayments')
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => validation_errors()
+            );
         }
-        else{
-           $this->add();
 
-        }
+        header('Content-Type: application/json');
+        echo json_encode($response);
        
 
     }
