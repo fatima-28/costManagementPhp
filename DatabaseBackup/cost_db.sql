@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2023 at 04:09 PM
+-- Generation Time: Jul 05, 2023 at 05:10 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,14 +39,9 @@ CREATE TABLE `currency` (
 INSERT INTO `currency` (`Id`, `name`) VALUES
 (1, 'USD'),
 (2, 'AZN'),
-(3, 'EURO'),
-(4, 'Ruble'),
-(5, 'TL'),
-(6, 'Rupi'),
 (7, 'Pound'),
-(8, 'AUD/NZD'),
-(9, 'CHF'),
-(10, 'ZAR');
+(14, 'Ruble'),
+(15, 'EURO');
 
 -- --------------------------------------------------------
 
@@ -60,21 +55,19 @@ CREATE TABLE `payment` (
   `payment_type_id` int(11) NOT NULL,
   `currency_id` int(11) NOT NULL,
   `is_income` tinyint(1) NOT NULL,
-  `comment` varchar(191) NOT NULL
+  `comment` varchar(191) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `payment`
 --
 
-INSERT INTO `payment` (`Id`, `amount`, `payment_type_id`, `currency_id`, `is_income`, `comment`) VALUES
-(1, '30000', 1, 1, 1, 'lorem ipsum dolor sit'),
-(2, '450', 2, 2, 0, 'lorem ipsum dolor sit'),
-(3, '200', 2, 5, 0, 'lorem ipsum dolor sit'),
-(4, '2600', 9, 3, 0, 'lorem ipsum dolor sit'),
-(5, '200', 3, 3, 0, ''),
-(6, '566', 1, 1, 1, 'Hello'),
-(7, '42000', 10, 6, 1, 'Welcome');
+INSERT INTO `payment` (`Id`, `amount`, `payment_type_id`, `currency_id`, `is_income`, `comment`, `created_date`) VALUES
+(2, '450', 2, 2, 0, 'lorem ipsum dolor sit', '2023-07-04 11:16:53'),
+(10, '10000', 3, 2, 1, 'lorem ipsum dolor sit amet', '2023-07-04 20:24:43'),
+(14, '2000', 3, 15, 0, 'Lorem ipsum dolor sit amet', '2023-07-05 04:44:10'),
+(15, '455', 3, 2, 1, 'lorem ipsum dolor sit', '2023-07-05 04:44:31');
 
 -- --------------------------------------------------------
 
@@ -95,15 +88,7 @@ INSERT INTO `payment_options` (`Id`, `name`) VALUES
 (1, 'Cash'),
 (2, 'Checks'),
 (3, 'Debit cards'),
-(4, 'Credit cards'),
-(5, 'Mobile Payments'),
-(6, 'Electronic bank transfers'),
-(7, 'AutoPay'),
-(8, 'Email Invoicing'),
-(9, 'QR'),
-(10, 'Modern'),
-(11, 'Old'),
-(12, 'Modern');
+(17, 'Mobile');
 
 --
 -- Indexes for dumped tables
@@ -137,19 +122,19 @@ ALTER TABLE `payment_options`
 -- AUTO_INCREMENT for table `currency`
 --
 ALTER TABLE `currency`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `payment_options`
 --
 ALTER TABLE `payment_options`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
