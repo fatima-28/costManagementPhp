@@ -21,6 +21,10 @@ body {
 form{
   gap:6%
 }
+.total-ctn{
+    color:red;
+    font-weight:600;
+}
  </style>
 </head>
 <body>
@@ -57,7 +61,17 @@ form{
            </div>
            
         </form>
-
+     <div class="col-3 card-col d-none" >
+     <div class="card" style="width: 18rem;">
+  
+  <div class="card-body">
+    <h5 class="card-title">Totals</h5>
+    <span class="card-text">Income:</span> <span class="total-ctn t-income">0</span> <br>
+    <span class="card-text">Expense:</span> <span class="total-ctn t-expense">0</span><br>
+    <span class="card-text">Remain:</span> <span class="total-ctn t-remain">0</span>
+     </div>
+</div>
+     </div>
     <div class="col-10 m-3">
         <table class="table  table-bordered">
             <thead>
@@ -115,7 +129,7 @@ form{
         </table>
         <div class="alert alert-info hide " role="alert">
         No data found for the filtering criteria!
-</div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    
@@ -127,11 +141,22 @@ form{
                       var form = $(this);
                       let isExist=false;
                       let thead=document.querySelector("thead");
+                      let totalIncome=document.querySelector(".t-income");
+                      let totalExpense=document.querySelector(".t-expense");
+                      let totalRemain=document.querySelector(".t-remain");
+                      let cardCol=document.querySelector(".card-col");
                       let alert=document.querySelector(".alert");
                        if (thead.classList.contains("hide")) {
+                        cardCol.classList.remove("hide");
                          thead.classList.remove("hide");
                          alert.classList.add("hide");
                        }
+                       if (cardCol.classList.contains("d-none")) {
+                        cardCol.classList.remove("d-none")
+                       }
+                       totalIncome.innerHTML=0;
+                       totalExpense.innerHTML=0;
+                       totalRemain.innerHTML=0;
                     //  console.log(form.serialize());
           
             $.ajax({
@@ -155,7 +180,18 @@ form{
                         if (elem.innerHTML===item.Id) {
                             elem.parentElement.classList.remove("hide");
                             isExist=true;
-                            console.log(isExist);
+                            if (item.is_income==1) {
+                                totalIncome.innerHTML= parseInt(totalIncome.innerHTML)+parseInt(item.amount);
+                                totalExpense.innerHTML=parseInt(totalExpense.innerHTML)+0;
+                                totalRemain.innerHTML= parseInt(totalRemain.innerHTML)+parseInt(item.amount);
+                            }
+                            else{
+                                totalExpense.innerHTML= parseInt(totalExpense.innerHTML)+parseInt(item.amount);
+                                totalIncome.innerHTML=parseInt(totalIncome.innerHTML)+0;
+                                totalRemain.innerHTML= parseInt(totalRemain.innerHTML)+parseInt(item.amount);
+                        
+                            }
+                           
                         }
                        
                     });
@@ -164,6 +200,7 @@ form{
                        
                         thead.classList.add("hide");
                         alert.classList.remove("hide");
+                        cardCol.classList.add("hide");
 
                     }
                  
