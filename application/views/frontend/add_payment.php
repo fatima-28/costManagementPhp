@@ -92,7 +92,7 @@
                     }
                 },
                 error: function() {
-                    alert('An error occurred while submitting the form.');
+                    alert('An error occurred w');
                 }
             });
         });

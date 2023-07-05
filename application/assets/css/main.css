@@ -1,0 +1,15 @@
+ .money {
+    color: green !important;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: table-row;
+}
+body {
+    padding-left: 40px;
+}
+form{
+  gap:6%
+} 

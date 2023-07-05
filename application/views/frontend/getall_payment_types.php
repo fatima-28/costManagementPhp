@@ -20,9 +20,7 @@
            
           </tr>
         </thead>
-        <tbody>
-
-          
+        <tbody> 
           <?php  foreach($types as $row):?>
           <tr>
           <td><?php  echo $row->Id;?></td>

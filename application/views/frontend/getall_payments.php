@@ -4,25 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-   
     <title>Document</title>
-    <style>
-        .money {
-            color: green;
-        }
-        .hide {
-            display: none;
-        }
-        .show {
-            display: table-row;
-        }
-        body {
-            padding-left: 40px;
-        }
-        form{
-          gap:6%
-        }
-    </style>
+ <style>
+    .money {
+    color: green !important;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: table-row;
+}
+body {
+    padding-left: 40px;
+}
+form{
+  gap:6%
+}
+ </style>
 </head>
 <body>
     <h1>Payments</h1>
@@ -76,7 +75,7 @@
             <tbody>
                 <?php foreach ($payment as $row): ?>
                     <tr class="infos">
-                        <td><?php echo $row->Id; ?></td>
+                        <td class="data-id"><?php echo $row->Id; ?></td>
                         <td class="type-name">
                             <?php
                                 $payment_type_id = $row->payment_type_id;
@@ -114,16 +113,26 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-       
+        <div class="alert alert-info hide " role="alert">
+        No data found for the filtering criteria!
+</div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
         <script>
          $(document).ready(function() {
                     $('#myForm').submit(function(e) {
                     e.preventDefault();
                     let tbody=document.querySelector("tbody");
                       var form = $(this);
-                      console.log(form.serialize());
+                      let isExist=false;
+                      let thead=document.querySelector("thead");
+                      let alert=document.querySelector(".alert");
+                       if (thead.classList.contains("hide")) {
+                         thead.classList.remove("hide");
+                         alert.classList.add("hide");
+                       }
+                    //  console.log(form.serialize());
           
             $.ajax({
               url: form.attr('action'),
@@ -131,34 +140,36 @@
                 data: form.serialize(),
                 dataType: 'html',
                 success: function(response) {
-                 
+                    
                  let trs=document.querySelectorAll(".infos");
-                 console.log(trs);
+                
                  trs.forEach(item => {
                   item.classList.add("hide");
+                 
                  });
                  var jsonData = JSON.parse(response);
                   jsonData.forEach(item => {
                     console.log(item);
-                    let tr = document.createElement('tr');
-                    tbody.appendChild(tr);
-
-                    tr.innerHTML=`
-                       <td>${item.Id}</td>
-      <td class="type-name">${item.payment_type_id}</td>
-      <td class="currency-name">${item.currency_id}</td>
-      <td>${item.comment}</td>
-      <td>${item.is_income == 1 ? item.amount : 0}<span class="money"></span></td>
-      <td>${item.is_income == 0 ? item.amount : 0}<span class="money"></span></td>
-      <td>${item.amount}</td>
-      <td class="datetime">${item.created_date}</td>
-                    `;
+                    let dataIds=document.querySelectorAll(".data-id");
+                    dataIds.forEach(elem => {
+                        if (elem.innerHTML===item.Id) {
+                            elem.parentElement.classList.remove("hide");
+                            isExist=true;
+                            console.log(isExist);
+                        }
+                       
+                    });
                   });
-                
+                  if (isExist==false) {
+                       
+                        thead.classList.add("hide");
+                        alert.classList.remove("hide");
+
+                    }
+                 
                 },
                 error: function(xhr,status,err) {
-                  // console.log(xhr);
-                  // console.log(status);
+                 
                   console.log(err);
                 }
                   });

@@ -25,11 +25,8 @@
         $this->db->where('created_date >', $startDate);
         $this->db->where('created_date <', $endDate);
         
-        
         }
       
-        
-       
         if (!empty($currencyId)) {
             $this->db->where('currency_id', $currencyId);
         }

@@ -54,7 +54,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                alert('An error occurred while submitting the form.');
+                alert('An error occurred ');
             }
         });
     });
