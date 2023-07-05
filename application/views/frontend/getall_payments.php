@@ -7,165 +7,164 @@
    
     <title>Document</title>
     <style>
-        .money{
-            color:green;
+        .money {
+            color: green;
         }
-        .hide{
-          display:none;
+        .hide {
+            display: none;
         }
-        .show{
-          display: table-row;
+        .show {
+            display: table-row;
         }
-        body{
-          padding-left:40px;
+        body {
+            padding-left: 40px;
+        }
+        form{
+          gap:6%
         }
     </style>
 </head>
 <body>
-<h1>Payments</h1>
-<div class="row">
-
-
-
-<form action="<?php echo base_url('filterdata')?>"  id="myForm" method="POST">
-<div class="row">
-<div class="col-3 m-3">
-
-<label for="start_date">Start Date:</label>
-    <input type="date" name="start_date" id="start_date" required value="2023-07-03"> <br>
+    <h1>Payments</h1>
     
-    <label for="end_date">End Date:</label>
-    <input type="date" name="end_date" id="end_date" required value="2023-07-30">
-    
-</div>
-<div class="col-3 m-3">
- <label for="">Filter by Category</label> <br>
- <select name="payment_type_id" class="typeSelect">
-   
-   <?php foreach ($types as $type): ?>
-   
-       <option value="<?php echo $type->Id; ?>"><?php echo $type->name; ?></option>
-   <?php endforeach; ?>
-</select>
- </div>
+        <form action="<?php echo base_url('filterdata') ?>" id="myForm" method="POST" class="d-flex">
+            
+                <div class="form-group">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date" required value="2023-07-03"> <br>
+                    <label for="end_date">End Date:</label>
+                    <input type="date" name="end_date" id="end_date" required value="2023-07-30">
 
- <div class="col-3 m-3">
- <label for="">Filter by Currency</label> <br>
- <select name="currency_id" class="currencySelect">
-    <?php foreach ($currencies as $currency) : ?>
-        <option value="<?php echo $currency->Id; ?>"><?php echo $currency->name; ?></option>
-    <?php endforeach; ?>
-
-</select>
- </div>
-</div>
-<button type="submit"  class="btn btn-success m-3 filter">Filter</button>
-</div>
-
-</form>
- 
-<div class="col-10 m-3" >
-    <table class="table  table-bordered">
-        <thead>
-          <tr class="table-info">
-          <th scope="col">id</th>
-          
-            <th scope="col">payment type</th>
-            <th scope="col">currency</th>
-            <th scope="col">comment</th>
-            <th scope="col">income</th>
-            <th scope="col">expense</th>   
-            <th scope="col">remain</th>
-            <th scope="col">created date</th>
+                </div>
+                <div class="form-group">
+                <label for="">Filter by Currency</label> <br>
+                    <select name="currency_id" class="currencySelect">
+                        <?php foreach ($currencies as $currency) : ?>
+                            <option value="<?php echo $currency->Id; ?>"><?php echo $currency->name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Filter by Category</label> <br>
+                    <select name="payment_type_id" class="typeSelect">
+                        <?php foreach ($types as $type): ?>
+                            <option value="<?php echo $type->Id; ?>"><?php echo $type->name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+               
+           <div class="form-group">
+           <button type="submit" class="btn btn-success m-3 filter">Filter</button>
+           </div>
            
-          </tr>
-        </thead>
-        <tbody>
+        </form>
 
-          
-          <?php  foreach($payment as $row):?>
-          <tr>
-          <td><?php  echo $row->Id;?></td>
-           
-            <td class="type-name">  
-            <?php
-      
-      $payment_type_id = $row->payment_type_id;
-      $payment_type_name = $this->db->select('name')->where('Id', $payment_type_id)->get('payment_options')->row()->name;
-      echo $payment_type_name;
-      ?>  
-        </td>
-
-            <td class="currency-name">   <?php
-      $currency_id = $row->currency_id;
-      $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
-      echo $currency_name;
-      ?></td>
-            <td><?php  echo $row->comment;?></td>
-          
-            <?php if ($row->is_income == 1): ?>
-                <td><?php  echo $row->amount;?>
-                <span class="money"> <?php
-      $currency_id = $row->currency_id;
-      $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
-      echo $currency_name;
-      ?></span>
-            </td>
-            <td>0 </td>
-  
-            <?php endif; ?>
-            <?php if ($row->is_income == 0): ?>
-                <td>0</td>
-                <td><?php  echo $row->amount;?>
-               <span class="money"> <?php
-      $currency_id = $row->currency_id;
-      $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
-      echo $currency_name;
-      ?></span></td>
-            <?php endif; ?>
-            <td><?php  echo $row->amount;?>
-            <td class="datetime"><?php  echo $row->created_date;?>
-          </tr>
-          <?php endforeach;?>
+    <div class="col-10 m-3">
+        <table class="table  table-bordered">
+            <thead>
+                <tr class="table-info">
+                    <th scope="col">id</th>
+                    <th scope="col">payment type</th>
+                    <th scope="col">currency</th>
+                    <th scope="col">comment</th>
+                    <th scope="col">income</th>
+                    <th scope="col">expense</th>   
+                    <th scope="col">remain</th>
+                    <th scope="col">created date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($payment as $row): ?>
+                    <tr class="infos">
+                        <td><?php echo $row->Id; ?></td>
+                        <td class="type-name">
+                            <?php
+                                $payment_type_id = $row->payment_type_id;
+                                $payment_type_name = $this->db->select('name')->where('Id', $payment_type_id)->get('payment_options')->row()->name;
+                                echo $payment_type_name;
+                            ?>  
+                        </td>
+                        <td class="currency-name">
+                            <?php
+                                $currency_id = $row->currency_id;
+                                $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
+                                echo $currency_name;
+                            ?>
+                        </td>
+                        <td><?php echo $row->comment; ?></td>
+                        <?php if ($row->is_income == 1): ?>
+                            <td><?php echo $row->amount; ?><span class="money"><?php
+                                $currency_id = $row->currency_id;
+                                $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
+                                echo $currency_name;
+                            ?></span></td>
+                            <td>0</td>
+                        <?php endif; ?>
+                        <?php if ($row->is_income == 0): ?>
+                            <td>0</td>
+                            <td><?php echo $row->amount; ?><span class="money"><?php
+                                $currency_id = $row->currency_id;
+                                $currency_name = $this->db->select('name')->where('Id', $currency_id)->get('currency')->row()->name;
+                                echo $currency_name;
+                            ?></span></td>
+                        <?php endif; ?>
+                        <td><?php echo $row->amount; ?></td>
+                        <td class="datetime"><?php echo $row->created_date; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
        
-        </tbody>
-      </table>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-      <script>
-      
-    $(document).ready(function() {
-      $('#myForm').submit(function(e) {
-        let form=$(this);
-           e.preventDefault();
-           
-           let urlEncodedString=form.serialize();
-           let urlParams = new URLSearchParams(urlEncodedString);
-           let jsonData = {};
-           for (const [key, value] of urlParams) {
-            jsonData[key] = value;
-          }
-           let jsonString = JSON.stringify(jsonData);
-            console.log(jsonString);  
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+         $(document).ready(function() {
+                    $('#myForm').submit(function(e) {
+                    e.preventDefault();
+                    let tbody=document.querySelector("tbody");
+                      var form = $(this);
+                      console.log(form.serialize());
+          
             $.ajax({
               url: form.attr('action'),
                 type: 'POST',
-                data: jsonString,
-                dataType: 'json',
+                data: form.serialize(),
+                dataType: 'html',
                 success: function(response) {
-                  console.log(response);
                  
+                 let trs=document.querySelectorAll(".infos");
+                 console.log(trs);
+                 trs.forEach(item => {
+                  item.classList.add("hide");
+                 });
+                 var jsonData = JSON.parse(response);
+                  jsonData.forEach(item => {
+                    console.log(item);
+                    let tr = document.createElement('tr');
+                    tbody.appendChild(tr);
+
+                    tr.innerHTML=`
+                       <td>${item.Id}</td>
+      <td class="type-name">${item.payment_type_id}</td>
+      <td class="currency-name">${item.currency_id}</td>
+      <td>${item.comment}</td>
+      <td>${item.is_income == 1 ? item.amount : 0}<span class="money"></span></td>
+      <td>${item.is_income == 0 ? item.amount : 0}<span class="money"></span></td>
+      <td>${item.amount}</td>
+      <td class="datetime">${item.created_date}</td>
+                    `;
+                  });
+                
                 },
                 error: function(xhr,status,err) {
-                  console.log(xhr);
-                  console.log(status);
+                  // console.log(xhr);
+                  // console.log(status);
                   console.log(err);
                 }
-            });
-        });
-    });
-</script>
-
-</div>
+                  });
+                 });
+                 });
+        </script>
 </body>
 </html>
+

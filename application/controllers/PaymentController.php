@@ -89,7 +89,7 @@ class PaymentController extends CI_Controller {
             show_404();
         }
         $start_date = $this->input->post('start_date');
-        echo $start_date+1;
+        
      
         $end_date = $this->input->post('end_date');
         $currency_id = $this->input->post('currency_id');

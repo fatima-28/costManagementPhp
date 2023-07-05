@@ -74,7 +74,7 @@
             e.preventDefault();
 
             var form = $(this);
-
+          console.log(form.serialize());
             $.ajax({
                 url: form.attr('action'),
                 type: 'POST',
